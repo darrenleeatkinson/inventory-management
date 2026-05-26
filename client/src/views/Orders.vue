@@ -27,6 +27,39 @@
         </div>
       </div>
 
+      <div v-if="restockingOrders.length > 0" class="card restocking-orders-card">
+        <div class="card-header">
+          <h3 class="card-title">Submitted Restocking Orders</h3>
+          <span class="restocking-count-badge">{{ restockingOrders.length }}</span>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Placed</th>
+                <th>Items</th>
+                <th>Lead Time</th>
+                <th>Expected Delivery</th>
+                <th>Status</th>
+                <th>Total Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="order in restockingOrders" :key="order.id">
+                <td><strong>{{ order.order_number }}</strong></td>
+                <td>{{ formatDate(order.order_date) }}</td>
+                <td>{{ order.items.length }} item(s)</td>
+                <td><span class="lead-time-badge">{{ order.lead_time_days }} days</span></td>
+                <td>{{ formatDate(order.expected_delivery) }}</td>
+                <td><span class="badge warning">{{ order.status }}</span></td>
+                <td><strong>${{ order.total_value.toLocaleString() }}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">{{ t('orders.allOrders') }} ({{ orders.length }})</h3>
@@ -84,6 +117,7 @@ import { api } from '../api'
 import { useFilters } from '../composables/useFilters'
 import { useI18n } from '../composables/useI18n'
 
+
 export default {
   name: 'Orders',
   setup() {
@@ -95,6 +129,15 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+    const restockingOrders = ref([])
+
+    const loadRestockingOrders = async () => {
+      try {
+        restockingOrders.value = await api.getRestockingOrders()
+      } catch (err) {
+        console.error('Failed to load restocking orders:', err)
+      }
+    }
 
     // Use shared filters
     const {
@@ -154,12 +197,14 @@ export default {
     }
 
     onMounted(loadOrders)
+    onMounted(loadRestockingOrders)
 
     return {
       t,
       loading,
       error,
       orders,
+      restockingOrders,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,
@@ -275,5 +320,27 @@ export default {
 .item-meta {
   font-size: 0.813rem;
   color: #64748b;
+}
+
+.restocking-orders-card {
+  border-left: 3px solid #2563eb;
+}
+
+.restocking-count-badge {
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.lead-time-badge {
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 </style>
