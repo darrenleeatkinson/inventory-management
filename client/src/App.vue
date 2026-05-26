@@ -1,60 +1,67 @@
 <template>
   <div class="app">
-    <aside class="sidebar">
+    <aside :class="['sidebar', { collapsed: sidebarCollapsed }]">
       <div class="sidebar-brand">
-        <h1>FactoryOS</h1>
-        <span class="subtitle">Inventory Management</span>
+        <div class="brand-full">
+          <h1>FactoryOS</h1>
+          <span class="subtitle">Inventory Management</span>
+        </div>
+        <button class="sidebar-toggle" @click="toggleSidebar" :title="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ rotated: sidebarCollapsed }">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
       </div>
       <nav class="sidebar-nav">
         <div class="nav-section">
           <span class="nav-section-label">Overview</span>
-          <router-link to="/">
+          <router-link to="/" title="Dashboard">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
             </svg>
-            Dashboard
+            <span class="nav-label">Dashboard</span>
           </router-link>
-          <router-link to="/inventory">
+          <router-link to="/inventory" title="Inventory">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
-            Inventory
+            <span class="nav-label">Inventory</span>
           </router-link>
         </div>
         <div class="nav-section">
           <span class="nav-section-label">Operations</span>
-          <router-link to="/orders">
+          <router-link to="/orders" title="Orders">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
             </svg>
-            Orders
+            <span class="nav-label">Orders</span>
           </router-link>
-          <router-link to="/restocking">
+          <router-link to="/restocking" title="Restocking">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            Restocking
+            <span class="nav-label">Restocking</span>
           </router-link>
         </div>
         <div class="nav-section">
           <span class="nav-section-label">Analytics</span>
-          <router-link to="/demand">
+          <router-link to="/demand" title="Demand">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
-            Demand
+            <span class="nav-label">Demand</span>
           </router-link>
-          <router-link to="/spending">
+          <router-link to="/spending" title="Spending">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 16v-1m0-14a9 9 0 110 18A9 9 0 0112 3z" />
             </svg>
-            Spending
+            <span class="nav-label">Spending</span>
           </router-link>
-          <router-link to="/reports">
+          <router-link to="/reports" title="Reports">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            Reports
+            <span class="nav-label">Reports</span>
           </router-link>
         </div>
       </nav>
@@ -93,7 +100,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { api } from './api'
 import { useAuth } from './composables/useAuth'
 import { useI18n } from './composables/useI18n'
@@ -118,6 +125,18 @@ export default {
     const showProfileDetails = ref(false)
     const showTasks = ref(false)
     const apiTasks = ref([])
+
+    const sidebarCollapsed = ref(false)
+
+    const toggleSidebar = () => {
+      sidebarCollapsed.value = !sidebarCollapsed.value
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        sidebarCollapsed.value = true
+      }
+    }
 
     // Merge mock tasks from currentUser with API tasks
     const tasks = computed(() => {
@@ -184,7 +203,15 @@ export default {
       }
     }
 
-    onMounted(loadTasks)
+    onMounted(() => {
+      loadTasks()
+      handleResize()
+      window.addEventListener('resize', handleResize)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', handleResize)
+    })
 
     return {
       t,
@@ -193,7 +220,9 @@ export default {
       tasks,
       addTask,
       deleteTask,
-      toggleTask
+      toggleTask,
+      sidebarCollapsed,
+      toggleSidebar
     }
   }
 }
@@ -230,13 +259,18 @@ body {
   top: 0;
   height: 100vh;
   overflow: hidden;
+  transition: width 0.25s ease;
   --text-primary: #e2e8f0;
   --text-muted: #94a3b8;
 }
 
 .sidebar-brand {
-  padding: 24px 20px 20px;
+  padding: 20px 16px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
 }
 
 .sidebar-brand h1 {
@@ -253,6 +287,45 @@ body {
   margin-top: 3px;
   border-left: none;
   padding-left: 0;
+}
+
+.brand-full {
+  overflow: hidden;
+  transition: opacity 0.2s ease, width 0.25s ease;
+  opacity: 1;
+  white-space: nowrap;
+}
+
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  padding: 0;
+  margin-left: 8px;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255,255,255,0.08);
+  color: #e2e8f0;
+}
+
+.sidebar-toggle svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s ease;
+}
+
+.sidebar-toggle svg.rotated {
+  transform: rotate(180deg);
 }
 
 .sidebar-nav {
@@ -309,12 +382,71 @@ body {
   box-shadow: inset 3px 0 0 #2563eb;
 }
 
+.nav-label {
+  transition: opacity 0.2s ease;
+  opacity: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .sidebar-footer {
   padding: 12px;
   border-top: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar.collapsed .brand-full {
+  opacity: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar.collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+  margin-left: 0;
+}
+
+.sidebar.collapsed .nav-section-label {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar.collapsed .nav-label {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar.collapsed .sidebar-nav a {
+  justify-content: center;
+  padding: 9px 0;
+}
+
+.sidebar.collapsed .sidebar-nav {
+  padding: 12px 8px;
+}
+
+.sidebar.collapsed .sidebar-footer {
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.sidebar.collapsed .nav-section {
+  margin-bottom: 4px;
 }
 
 .app-body {
